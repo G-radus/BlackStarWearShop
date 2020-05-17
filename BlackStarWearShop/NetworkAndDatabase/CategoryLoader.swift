@@ -8,11 +8,13 @@
 
 import Foundation
 import Alamofire
-
+import SVProgressHUD
 
 class CategoryLoader {
     
     func loadCategories(loadedCategories: @escaping ([Categories]) -> Void) {
+        SVProgressHUD.setForegroundColor(#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1))
+        SVProgressHUD.show()
         Alamofire.request("http://blackstarshop.ru/index.php?route=api/v1/categories").responseJSON {
             response in
             if let json = response.value,
@@ -24,6 +26,7 @@ class CategoryLoader {
                     }
                 }
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     loadedCategories(listOfCategories)
                 }
             }
@@ -43,6 +46,7 @@ class CategoryLoader {
                 }
                 
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     loadedItemsList(itemsList)
                 }
             }
